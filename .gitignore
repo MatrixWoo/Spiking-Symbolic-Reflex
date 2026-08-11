@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+output/mujoco/*.mp4
+output/mujoco/videos/
+output/mujoco/logs/
+*.tar.gz
+mujoco_menagerie/

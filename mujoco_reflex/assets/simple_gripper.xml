@@ -1,0 +1,48 @@
+<mujoco model="gripper_slip">
+  <compiler angle="radian"/>
+  <option timestep="0.002" gravity="0 0 -9.81"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.1 0.1 0.1"/>
+  </visual>
+
+  <asset>
+    <texture type="2d" name="ground" builtin="checker" mark="edge"
+             rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" width="300" height="300"/>
+    <material name="ground_mat" texture="ground" texrepeat="5 5"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 3 2" dir="0 -1 -0.5" directional="true"/>
+    <geom name="floor" size="0 0 0.05" type="plane" material="ground_mat"/>
+
+    <!-- Table surface at z=0.3 -->
+    <body name="table" pos="0 0 0.30">
+      <geom type="box" size="0.1 0.1 0.01" rgba="0.5 0.5 0.5 1" mass="0"/>
+    </body>
+
+    <!-- Cube object sitting on table between pads -->
+    <body name="cube" pos="0 0 0.33">
+      <freejoint/>
+      <geom type="box" size="0.02 0.02 0.02" rgba="0.9 0.3 0.3 1" mass="0.1"/>
+    </body>
+
+    <!-- Gripper: two pads that squeeze toward center along y-axis -->
+    <body name="gripper_base" pos="0 0 0.36">
+      <body name="right_pad" pos="0 0.04 0">
+        <joint name="right_j" type="slide" axis="0 -1 0" range="0 0.035"/>
+        <geom type="box" size="0.015 0.006 0.025" rgba="0.3 0.3 0.8 1" mass="0.05"/>
+      </body>
+      <body name="left_pad" pos="0 -0.04 0">
+        <joint name="left_j" type="slide" axis="0 1 0" range="0 0.035"/>
+        <geom type="box" size="0.015 0.006 0.025" rgba="0.3 0.3 0.8 1" mass="0.05"/>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="right_act" joint="right_j" ctrlrange="0 0.035" kp="200"/>
+    <position name="left_act"  joint="left_j"  ctrlrange="0 0.035" kp="200"/>
+  </actuator>
+
+</mujoco>
